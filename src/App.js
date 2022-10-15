@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Row from './components/Row';
 import confetti from 'canvas-confetti';
+import { WORDS } from './wordList';
 
 // IMPROVEMENTS: try again button to reset/ get new word, leaderboard or scoreboard, only display color for the amount of letters of the word (if word only has 2 Ls, only show 2 yellows)
 
@@ -12,20 +13,25 @@ function App() {
     const [currentGuess, setCurrentGuess] = useState('');
     const [isGameOver, setGameOver] = useState(false);
 
-    // API Endpoint using Datamuse (fetches 999 5-letter words which is the API max)
-    const API_URL = 'https://api.datamuse.com/words?sp=?????&max=999';
+    // API Endpoint by Stanford for 5-letter words
+    // const API_URL = 'https://www-cs-faculty.stanford.edu/~knuth/sgb-words.txt';
 
     // retrieve a random word
     useEffect(() => {
-        const fetchWord = async () => {
-            try {
-                const response = await fetch('https://api.datamuse.com/words?sp=?????&max=999');
-                const wordsArray = await response.json();
-                const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
-                setAnswer(randomWord.word);
-            } catch (err) {
-                console.log(err);
-            }
+        // const fetchWord = async () => {
+        //     try {
+        //         const response = await fetch(API_URL);
+        //         const wordsArray = await response.json();
+        //         const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
+        //         setAnswer(randomWord.word);
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // };
+
+        const fetchWord = () => {
+            const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+            setAnswer(randomWord);
         };
 
         fetchWord();
@@ -53,6 +59,14 @@ function App() {
                 if (e.key === 'Enter') {
                     // if word isn't 5 letters
                     if (currentGuess.length !== 5) {
+                        return;
+                    }
+
+                    const isValidWord = (word) => {
+                        return WORDS.includes(word);
+                    };
+
+                    if (!isValidWord(currentGuess)) {
                         return;
                     }
 
