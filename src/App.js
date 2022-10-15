@@ -3,6 +3,8 @@ import './App.css';
 import Row from './components/Row';
 import confetti from 'canvas-confetti';
 
+// IMPROVEMENTS: try again button to reset/ get new word, leaderboard or scoreboard, only display color for the amount of letters of the word (if word only has 2 Ls, only show 2 yellows)
+
 function App() {
     const [answer, setAnswer] = useState();
     // one array of 6 strings/guesses, each string will have 5 letters
@@ -10,17 +12,17 @@ function App() {
     const [currentGuess, setCurrentGuess] = useState('');
     const [isGameOver, setGameOver] = useState(false);
 
-    // API Endpoint (returns 5-letter words): https://api.frontendexpert.io/api/fe/wordle-words
-    const API_URL = 'https://intense-dusk-96795.herokuapp.com/https://api.frontendexpert.io/api/fe/wordle-words';
+    // API Endpoint using Datamuse (fetches 999 5-letter words which is the API max)
+    const API_URL = 'https://api.datamuse.com/words?sp=?????&max=999';
 
     // retrieve a random word
     useEffect(() => {
         const fetchWord = async () => {
             try {
-                const response = await fetch(API_URL);
-                const words = await response.json();
-                const randomWord = words[Math.floor(Math.random() * words.length)];
-                setAnswer(randomWord.toLowerCase());
+                const response = await fetch('https://api.datamuse.com/words?sp=?????&max=999');
+                const wordsArray = await response.json();
+                const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
+                setAnswer(randomWord.word);
             } catch (err) {
                 console.log(err);
             }
