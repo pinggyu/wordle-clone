@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Row from './components/Row';
 import confetti from 'canvas-confetti';
-import { WORDS } from './wordList';
+import { WORDS } from './constants/wordList';
 
-// IMPROVEMENTS: try again button to reset/ get new word, leaderboard or scoreboard, only display color for the amount of letters of the word (if word only has 2 Ls, only show 2 yellows)
+// IMPROVEMENTS: try again button to reset/ get new word, leaderboard or scoreboard, only display color for the amount of letters of the word (if word only has 2 Ls, only show 2 yellows), animations when not the right word
 
 function App() {
     const [answer, setAnswer] = useState();
@@ -114,7 +114,9 @@ function App() {
                         </li>
                     </ul>
                 </h2>
-                <h3>Use your keyboard to type and press enter to submit a guess.</h3>
+                <h3>
+                    Use your keyboard to type and press <span className="enter">enter</span> to submit a guess.
+                </h3>
             </header>
 
             <div className="board">
@@ -136,7 +138,7 @@ function App() {
                 <div className="winAlert"> {isGameOver ? <p>Congratulations! You found the word. 🎉</p> : null} </div>
                 <div className="loseAlert">
                     {!isGameOver && guesses.findIndex((val) => val === '') === -1 ? (
-                        <p>Out of tries! Better luck next time. The word was {answer}. 🤓</p>
+                        <p>Out of tries! Better luck next time. The word was {answer.toUpperCase()}. 🤓</p>
                     ) : null}
                 </div>
             </div>
