@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Row from './components/Row';
+import confetti from 'canvas-confetti';
 
 function App() {
     const [answer, setAnswer] = useState();
@@ -56,6 +57,7 @@ function App() {
                     const isCorrect = answer === currentGuess;
                     if (isCorrect) {
                         setGameOver(true);
+                        confetti();
                     }
 
                     // set current index guess to the current guess in the guesses array
@@ -85,11 +87,11 @@ function App() {
                     You have 6 tries to guess the 5-letter word. The color of the tiles will indicate specific clues:
                     <ul className="instructions">
                         <li>
-                            <span className="correct">green</span> means the letter is exists in the word and is in the
+                            <span className="correct">green</span> means the letter exists in the word and is in the
                             correct spot,
                         </li>
                         <li>
-                            <span className="close">yellow</span> means the the letter exists but is in the wrong spot,
+                            <span className="close">yellow</span> means the letter exists but is in the wrong spot,
                         </li>
                         <li>
                             <span className="incorrect">gray</span> means the letter is not in any spot of the word.
@@ -115,7 +117,12 @@ function App() {
                         />
                     );
                 })}
-                <div className="alert"> {isGameOver ? <p>Congratulations! You found the word. 🎉</p> : null} </div>
+                <div className="winAlert"> {isGameOver ? <p>Congratulations! You found the word. 🎉</p> : null} </div>
+                <div className="loseAlert">
+                    {!isGameOver && guesses.findIndex((val) => val === '') === -1 ? (
+                        <p>Out of tries! Better luck next time. The word was {answer}. 🤓</p>
+                    ) : null}
+                </div>
             </div>
         </div>
     );
